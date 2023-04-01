@@ -38,11 +38,16 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^12.9.0",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "latest",
     "prettier": "2.8.7",
     "sass": "^1.60.0"
+  },
+  "volta": {
+    "node": "18.15.0",
+    "yarn": "4.0.0-rc.42"
   }
 }
