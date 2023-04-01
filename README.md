@@ -1,5 +1,6 @@
 # railway-book-review-react-app
-React.jsを用いた書籍レビューアプリ
+
+React.js を用いた書籍レビューアプリ
 
 # Getting Started with Create React App
 

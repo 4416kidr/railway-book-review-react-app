@@ -1,24 +1,71 @@
 # Start Project
-1. github.comで新規プロジェクトを作成する
+
+## git と create-react-app
+
+1. github.com で新規プロジェクトを作成する
 2. `git clone` [リモートリンク(github.com)]
 3. `yarn create react-app [プロジェクトのフォルダ名]`
    - [Create React App Getting Started](https://create-react-app.dev/docs/getting-started/#yarn)
-   - [yarnでcreate-react-appをするには？](https://qiita.com/RyosukeSomeya/items/974d4308c194a804162a)
+   - [yarn で create-react-app をするには？](https://qiita.com/RyosukeSomeya/items/974d4308c194a804162a)
      - おそらく`yarn`を使うなら、`npx create-react-app my-app`よりも良いはず
 4. 以下の内容を`.gitignore`に追記する
-    ```
-    .pnp.*
-    .yarn/*
-    !.yarn/patches
-    !.yarn/plugins
-    !.yarn/releases
-    !.yarn/sdks
-    !.yarn/versions
-    ```
+   ```
+   .pnp.*
+   .yarn/*
+   !.yarn/patches
+   !.yarn/plugins
+   !.yarn/releases
+   !.yarn/sdks
+   !.yarn/versions
+   ```
    - [Which files should be gitignored?](https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored)
-     - Zero-installsかどうかわかんなかったので、とりあえず`.pnp.*`が入っている下のものを選択した
-     - この影響によって、branchを変えるごとに`yarn install`が必要となることに注意
+     - Zero-installs かどうかわかんなかったので、とりあえず`.pnp.*`が入っている下のものを選択した
+     - この影響によって、branch を変えるごとに`yarn install`が必要となることに注意
 5. `git add -A`
 6. `git commit`
 7. `git push`
 
+## 各種パッケージのインストール
+
+1. `yarn add react-router-dom`
+2. `yarn add -D eslint`
+   1. `.eslintrc.js`に`rules: { "react/jsx-uses-react": "off", "react/react-in-jsx-scope": "off", },`を追記
+      1. `jsx`のエラーを解消
+   2. `.eslintrc.js`に`settings: {react: {version: "detect",}}`を追記
+      1. `warning`に対処
+3. `yarn run eslint --init`
+
+   ```
+   You can also run this command directly using 'npm init @eslint/config'.
+   ✔ How would you like to use ESLint? · problems
+   ✔ What type of modules does your project use? · esm
+   ✔ Which framework does your project use? · react
+   ✔ Does your project use TypeScript? · No / Yes
+   ✔ Where does your code run? · browser, node
+   ✔ What format do you want your config file to be in? · JavaScript
+   The config that you've selected requires the following dependencies:
+
+   eslint-plugin-react@latest
+   ✔ Would you like to install them now? · No / Yes
+   ✔ Which package manager do you want to use? · yarn
+   ```
+
+4. `yarn add -D --exact prettier`
+5. `yarn run -D eslint-config-prettier`
+6. `yarn add -D eslint-config-react-app`
+   - `.eslintrc.js`に`extends: ["react-app", "react-app/jest"]`を追記
+     - `test is not defined`などのエラーに対処
+   - [eslint-config-react-app(yarn)](https://yarnpkg.com/package/eslint-config-react-app)
+     - readme をよく読むこと
+7. `yarn add -D sass`
+8. 各種設定
+
+## 周辺知識
+
+- [.eslintrc の env について](https://zenn.dev/kimromi/articles/546923b7281dcb)
+  - ざっくり説明すると、いろいろなグローバル変数を導入して、未定義エラーを出ないようにするもの
+  - 公式ドキュメントへのリンクもある
+- [ESLint Rules Reference](https://eslint.org/docs/latest/rules/)
+  - `ESLint`で設定できるルールの一覧
+- [JEST](https://jestjs.io/ja/)
+  - `JEST`とは、js のテスティングフレームワーク
