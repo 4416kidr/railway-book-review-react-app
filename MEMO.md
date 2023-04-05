@@ -60,6 +60,12 @@
 7. `yarn add -D sass`
 8. 各種設定
 
+## Cypressの導入
+1. `yarn add -D cypress`
+   - [Installing Cypress](https://docs.cypress.io/guides/getting-started/installing-cypress)
+2. `yarn run cypress open`
+   - [Opening the App](https://docs.cypress.io/guides/getting-started/opening-the-app)
+
 ## 周辺知識
 
 - [.eslintrc の env について](https://zenn.dev/kimromi/articles/546923b7281dcb)
@@ -69,3 +75,8 @@
   - `ESLint`で設定できるルールの一覧
 - [JEST](https://jestjs.io/ja/)
   - `JEST`とは、js のテスティングフレームワーク
+- [IDE Integration (Cypress)](https://docs.cypress.io/guides/tooling/IDE-integration#Triple-slash-directives)
+  - Cypressのintellisenseを表示する方法
+  - これは`npm`で飲み用いることができるので、以下の方法を採用
+- [cypressのintellisenseを見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
+  - intellisenseを見る方法をいろいろ試して見つけたので、それを記事にしたもの
