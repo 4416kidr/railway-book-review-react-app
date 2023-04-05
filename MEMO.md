@@ -86,3 +86,4 @@
   - これは`npm`で飲み用いることができるので、以下の方法を採用
 - [cypress の intellisense を見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
   - intellisense を見る方法をいろいろ試して見つけたので、それを記事にしたもの
+- [cypress の例](https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/logging-in__html-web-forms/cypress/e2e/logging-in-html-web-form-spec.cy.js)
