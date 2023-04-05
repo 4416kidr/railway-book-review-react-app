@@ -9,6 +9,7 @@ module.exports = {
     "plugin:react/recommended",
     "react-app",
     "react-app/jest",
+    "plugin:cypress/recommended",
   ],
   overrides: [],
   parserOptions: {

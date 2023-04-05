@@ -60,11 +60,17 @@
 7. `yarn add -D sass`
 8. 各種設定
 
-## Cypressの導入
+## Cypress の導入
+
 1. `yarn add -D cypress`
    - [Installing Cypress](https://docs.cypress.io/guides/getting-started/installing-cypress)
 2. `yarn run cypress open`
    - [Opening the App](https://docs.cypress.io/guides/getting-started/opening-the-app)
+3. `yarn add eslint-plugin-cypress --dev`
+   - [eslint-plugin-cypress](https://github.com/cypress-io/eslint-plugin-cypress)
+     - [Using ESlint? (Cypress)](https://docs.cypress.io/guides/end-to-end-testing/writing-your-first-end-to-end-test)
+
+- `eslintrc.js`に`"extends: ["plugin:cypress/recommended"]"`を追記
 
 ## 周辺知識
 
@@ -76,7 +82,7 @@
 - [JEST](https://jestjs.io/ja/)
   - `JEST`とは、js のテスティングフレームワーク
 - [IDE Integration (Cypress)](https://docs.cypress.io/guides/tooling/IDE-integration#Triple-slash-directives)
-  - Cypressのintellisenseを表示する方法
+  - Cypress の intellisense を表示する方法
   - これは`npm`で飲み用いることができるので、以下の方法を採用
-- [cypressのintellisenseを見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
-  - intellisenseを見る方法をいろいろ試して見つけたので、それを記事にしたもの
+- [cypress の intellisense を見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
+  - intellisense を見る方法をいろいろ試して見つけたので、それを記事にしたもの
