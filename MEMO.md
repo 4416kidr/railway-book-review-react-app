@@ -89,3 +89,9 @@
   - これは`npm`で飲み用いることができるので、以下の方法を採用
 - [cypress の intellisense を見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
   - intellisense を見る方法をいろいろ試して見つけたので、それを記事にしたもの
+
+
+## intellisenseの問題
+* `jsconfig.json`というからファイルを作成したら、cypressのintellisenseも表示されるようになった
+  * おそらく、裏で暗示的にintellisenseをインポートしてるんだろうな
+  * [Visual Studio CodeでJestの入力補完（インテリセンス）が効かない時の対応方法](https://trialanderror.jp/jest-intellisense-not-working/)

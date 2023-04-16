@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "jsconfig.json": "^2.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
@@ -38,12 +39,14 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^29.5.0",
     "cypress": "^12.9.0",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-cypress": "^2.13.2",
     "eslint-plugin-react": "latest",
+    "jest": "^29.5.0",
     "prettier": "2.8.7",
     "sass": "^1.60.0"
   },
