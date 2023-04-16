@@ -1,4 +1,4 @@
-# Start Project
+# Station1
 
 ## git と create-react-app
 
@@ -90,8 +90,33 @@
 - [cypress の intellisense を見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
   - intellisense を見る方法をいろいろ試して見つけたので、それを記事にしたもの
 
+## intellisense の問題
 
-## intellisenseの問題
-* `jsconfig.json`というからファイルを作成したら、cypressのintellisenseも表示されるようになった
-  * おそらく、裏で暗示的にintellisenseをインポートしてるんだろうな
-  * [Visual Studio CodeでJestの入力補完（インテリセンス）が効かない時の対応方法](https://trialanderror.jp/jest-intellisense-not-working/)
+- `jsconfig.json`というからファイルを作成したら、cypress の intellisense も表示されるようになった
+  - おそらく、裏で暗示的に intellisense をインポートしてるんだろうな
+  - [Visual Studio Code で Jest の入力補完（インテリセンス）が効かない時の対応方法](https://trialanderror.jp/jest-intellisense-not-working/)
+
+# Station2
+
+- 単体テストを作ろう
+
+## jest
+
+- `@types/jest`と`jest`をインストール
+  - どちらも`yarn add --dev`
+  - `@types/jest`は任意
+- `@testing-library/*`は`create react app`によって最初から入っている
+- それぞれのライブラリへのリンク
+  - [@types/jest](https://yarnpkg.com/package/@types/jest#readme)
+  - [JEST](https://jestjs.io/)
+  - [Testing Library](https://testing-library.com/)
+
+## 周辺知識
+
+- [React 公式のテストユーティリティ](https://ja.reactjs.org/docs/test-utils.html)に`react-testing-library`の使用がおすすめされている
+  - インターネット上に`react-test-renderer`を用いた情報もあるが、おそらく古い？
+
+## 実装の参考
+
+- [React で Testing Library/Jest を使ってテストを学ぼう](https://reffect.co.jp/react/react-test)
+- [Jest で React をユニットテストしてみる](https://www.webopixel.net/javascript/1777.html)
