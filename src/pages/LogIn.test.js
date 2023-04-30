@@ -13,10 +13,8 @@ test("renders label", () => {
   expect(linkElement).toBeInTheDocument();
 });
 
-test("renders input form", () => {
+test("renders button", () => {
   render(<Login />);
   const linkElement = screen.getByText(/button/i);
   expect(linkElement).toBeInTheDocument();
 });
-
-

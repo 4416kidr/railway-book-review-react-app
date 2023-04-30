@@ -22,7 +22,8 @@
       "react",
       "react-dom",
       "jest",
-      "testing-library__jest-dom"
+      "testing-library__jest-dom",
+      "react-router-dom"
     ]
   }
 }
