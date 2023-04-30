@@ -4395,6 +4395,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"blueimp-canvas-to-blob@npm:^3.29.0":
+  version: 3.29.0
+  resolution: "blueimp-canvas-to-blob@npm:3.29.0"
+  checksum: 3b08a244a3ad0a63ba003ed6a0b2bd5a89edcd0f64aead67262c43e64c9accc709bf088884d721ada3a71ea8fa5568c37300bfe1b1012f4a063fed149fc2a482
+  languageName: node
+  linkType: hard
+
 "body-parser@npm:1.20.1":
   version: 1.20.1
   resolution: "body-parser@npm:1.20.1"
@@ -4993,6 +5000,16 @@ __metadata:
     safe-buffer: "npm:5.1.2"
     vary: "npm:~1.1.2"
   checksum: 950328121faf22e253580d3e2af6f1c1320b2d38e5bcc93bf87b9a1906d3d89fbc3e380af756c09323cd6c839cac7e605b8f0d54ae7abb55dfe82658002e76e3
+  languageName: node
+  linkType: hard
+
+"compressorjs@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "compressorjs@npm:1.2.1"
+  dependencies:
+    blueimp-canvas-to-blob: "npm:^3.29.0"
+    is-blob: "npm:^2.1.0"
+  checksum: 647e0b41fc54758891facfa8dd53bf3401af711952cc7719eba8aec3997df6aaa8e36804f232a1e0aea9cd4027ff39b79fc313157fa8e0eea185da3e66a4428e
   languageName: node
   linkType: hard
 
@@ -7947,6 +7964,13 @@ __metadata:
   dependencies:
     binary-extensions: "npm:^2.0.0"
   checksum: f6ed933392b85facdc081bbe3539602ac70cf35fe5d3d7e02da0b9c4bc65fa673d815142f16bf6253de84a561332a680382be1ade1406c89c9102832a571620f
+  languageName: node
+  linkType: hard
+
+"is-blob@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "is-blob@npm:2.1.0"
+  checksum: 969407a474120ecd72f97d7b9986c11bf7f6cae8141c0c36c45c03b629579de2fe48596f67cf8237c8e27c5621caafd62f02004bca2544f8e57dcbfdf7c5f02e
   languageName: node
   linkType: hard
 
@@ -11902,6 +11926,7 @@ __metadata:
     "@testing-library/user-event": "npm:^13.2.1"
     "@types/jest": "npm:^29.5.0"
     axios: "npm:^1.3.5"
+    compressorjs: "npm:^1.2.1"
     cypress: "npm:^12.9.0"
     eslint: "npm:^8.37.0"
     eslint-config-prettier: "npm:^8.8.0"

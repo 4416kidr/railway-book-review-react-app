@@ -90,8 +90,14 @@
 - [cypress の intellisense を見る方法](https://qiita.com/TooFuu/items/32253fe1b6c82d49fc63)
   - intellisense を見る方法をいろいろ試して見つけたので、それを記事にしたもの
 
+## intellisense の問題
 
-## intellisenseの問題
-* `jsconfig.json`というからファイルを作成したら、cypressのintellisenseも表示されるようになった
-  * おそらく、裏で暗示的にintellisenseをインポートしてるんだろうな
-  * [Visual Studio CodeでJestの入力補完（インテリセンス）が効かない時の対応方法](https://trialanderror.jp/jest-intellisense-not-working/)
+- `jsconfig.json`というからファイルを作成したら、cypress の intellisense も表示されるようになった
+  - おそらく、裏で暗示的に intellisense をインポートしてるんだろうな
+  - [Visual Studio Code で Jest の入力補完（インテリセンス）が効かない時の対応方法](https://trialanderror.jp/jest-intellisense-not-working/)
+
+
+# Station3
+## SignUp
+- [inputされたimageをプレビューする方法](https://zenn.dev/tsucchiiinoko/articles/8d0787b0c1ae8d)
+  - `window.URL.createObjectURL(file)`ってのが肝らしい
