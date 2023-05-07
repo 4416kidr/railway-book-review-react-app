@@ -4,35 +4,21 @@ import { useNavigate } from "react-router-dom";
 // import { url } from "../const";
 import Compressor from "compressorjs";
 import { useFormik } from "formik";
+import * as yup from 'yup';
 import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
-  const validate = (values) => {
-    const errors = {};
-    if (!values.username) {
-      errors.username = "入力が必須の項目です。";
-    }
-
-    if (!values.email) {
-      errors.email = "入力が必須の項目です。";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = "正しいメールアドレスの形式ではありません。";
-    }
-
-    if (!values.password) {
-      errors.password = "入力が必須の項目です。";
-    }
-
-    if (!values.passwordConfirm) {
-      errors.passwordConfirm = "入力が必須の項目です。";
-    } else if (values.password !== values.passwordConfirm) {
-      errors.passwordConfirm = "パスワードが一致しません。";
-    }
-    return errors;
-  };
+  let navigate = useNavigate();
+  const schema = yup.object({
+    username: yup.string().required(),
+    email: yup.string().email().required(),
+    icon: yup.mixed().required().test('fileFormat', 'only png & jpg', (value) => {
+      console.log(value); return value && ['image/jpg', 'image/png'].includes(value.type);
+    }),
+    password: yup.string().required(),
+    passwordConfirm: yup.string().required(),
+  })
   const { handleChange, handleSubmit, values, errors, setFieldValue } =
     useFormik({
       initialValues: {
@@ -46,24 +32,8 @@ export const SignUp = () => {
       onSubmit: (values) => {
         console.log(values);
       },
-      validate,
+      validationSchema: schema,
     });
-
-  // console.log(errors);
-
-  let navigate = useNavigate();
-  // const onSignUp = () => {
-  //   const data = {
-  //     name: name,
-  //     email: email,
-  //     password: password,
-  //   };
-
-  //   axios.post(`${url}/users`, data).then((res) => {
-  //     const token = res.data.token;
-  //     navigate("/");
-  //   });
-  // };
 
   const handleIconChange = (e) => {
     const icon = e.target.value;
@@ -77,16 +47,18 @@ export const SignUp = () => {
     new Compressor(file, {
       convertSize: 1000000,
       success(result) {
+        console.log(file);
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
           setIconThumb(reader.result);
         };
+        setFieldValue('icon', file);
         console.log(result);
         console.log(result.name);
       },
       error(err) {
-        console.log(err.meassage);
+        console.log(err.message);
       },
     });
   };
@@ -144,7 +116,6 @@ export const SignUp = () => {
             accept=".jpg,.png"
             name="icon"
             required
-            value={values.icon}
             onChange={handleIconChange}
           />
           {errors.icon && <div className="form-errors">{errors.icon}</div>}
@@ -180,7 +151,10 @@ export const SignUp = () => {
         </div>
         <input type="submit" value={"submit"} />
       </form>
-      <img className="icon-preview" src={iconThumb} alt={values.icon} />
+      <div>
+        <p>icon preview</p>
+        <img className="icon-preview" src={iconThumb} alt={values.icon} />
+      </div>
     </>
   );
 };
