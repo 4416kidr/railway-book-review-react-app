@@ -96,8 +96,16 @@
   - おそらく、裏で暗示的に intellisense をインポートしてるんだろうな
   - [Visual Studio Code で Jest の入力補完（インテリセンス）が効かない時の対応方法](https://trialanderror.jp/jest-intellisense-not-working/)
 
-
 # Station3
+
 ## SignUp
-- [inputされたimageをプレビューする方法](https://zenn.dev/tsucchiiinoko/articles/8d0787b0c1ae8d)
+
+- [formik の使い方](https://reffect.co.jp/react/formik)
+  - formik の基本的な使い方と yup について説明されている
+- [formik の handleChange の Docs](https://formik.org/docs/api/formik#handlechange-e-reactchangeeventany--void)
+  - input タグの name を formik の value 名と同じにしないといけない
+    - この問題に気付くのに、30 分ぐらいかかった
+- [formik とともに input された image をプレビューする方法](https://zenn.dev/msksgm/articles/20211112-react-formik-image-uploader)
+  - `new FileReader()`を用いるのがポイントっぽい
+- [input された image をプレビューする方法](https://zenn.dev/tsucchiiinoko/articles/8d0787b0c1ae8d)
   - `window.URL.createObjectURL(file)`ってのが肝らしい
