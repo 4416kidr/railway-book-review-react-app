@@ -1,7 +1,6 @@
 // import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { url } from "../const";
 import Compressor from "compressorjs";
 import { useFormik } from "formik";
 import * as yup from 'yup';
@@ -27,7 +26,6 @@ export const SignUp = () => {
         icon: "",
         password: "",
         passwordConfirm: "",
-        t_e_s_t: "",
       },
       onSubmit: (values) => {
         console.log(values);
@@ -77,9 +75,9 @@ export const SignUp = () => {
           navigate("/login");
         }}
       >
-        to login
+        to logIn
       </button>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">User Name</label>
           <input
@@ -133,9 +131,10 @@ export const SignUp = () => {
           />
           {errors.password && (
             <div className="form-errors">{errors.password}</div>
-          )}
+            )}
         </div>
         <div>
+          <label htmlFor="passwordConfirm">Password Confirm</label>
           <input
             id="passwordConfirm"
             type="password"
@@ -149,7 +148,7 @@ export const SignUp = () => {
             <div className="form-errors">{errors.passwordConfirm}</div>
           )}
         </div>
-        <input type="submit" value={"submit"} />
+        <input type="submit" value={"SignUp"} />
       </form>
       <div>
         <p>icon preview</p>
