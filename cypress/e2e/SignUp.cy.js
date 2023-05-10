@@ -1,7 +1,7 @@
 describe("sign up", () => {
   context("HTML form submission", () => {
     beforeEach(() => {
-      cy.visit("/");
+      cy.visit("/SignUp");
     });
     const test_pw = "pass1234";
 
