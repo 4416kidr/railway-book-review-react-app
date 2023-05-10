@@ -4,10 +4,14 @@ import { useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
 import { useFormik } from "formik";
 import * as yup from 'yup';
+import axios from "axios";
+import {url} from "../const.js";
 import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
+  const [token, setToken] = useState(null);
+  const [submitResult, setSubmitResult] = useState('nothing');
   let navigate = useNavigate();
   const schema = yup.object({
     username: yup.string().required(),
@@ -28,7 +32,22 @@ export const SignUp = () => {
         passwordConfirm: "",
       },
       onSubmit: (values) => {
-        console.log(values);
+        const data = {
+          name: values.username,
+          email: values.email,
+          password: values.password
+        }
+        axios
+          .post(`${url}/users`, data)
+          .then((res) => {
+            console.log(`success to SingUp. ${res}`);
+            setToken(res.data.token);
+            navigate("/dashboard")
+          })
+          .catch((err) => {
+            console.log(`fail to SignUp. ${err}`);
+            setSubmitResult('fail to SignUp');
+          });
       },
       validationSchema: schema,
     });
@@ -154,6 +173,7 @@ export const SignUp = () => {
         <p>icon preview</p>
         <img className="icon-preview" src={iconThumb} alt={values.icon} />
       </div>
+      <p className="submit-result">Submit result: {submitResult}</p>
     </>
   );
 };
