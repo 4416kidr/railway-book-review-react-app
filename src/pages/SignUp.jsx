@@ -22,6 +22,25 @@ export const SignUp = () => {
     password: yup.string().required(),
     passwordConfirm: yup.string().required(),
   })
+  const UploadIcon = () => {
+    const data = {
+      name: values.username,
+      email: values.email,
+      password: values.password
+    }
+    axios
+      .post(`${url}/uploads`, data)
+      .then((res) => {
+        console.log(`success to SingUp. ${res}`);
+        setToken(res.data.token);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        console.log(`fail to SignUp. ${err}`);
+        setSubmitResult('fail to SignUp');
+      });
+  }
+
   const { handleChange, handleSubmit, values, errors, setFieldValue } =
     useFormik({
       initialValues: {
@@ -42,7 +61,7 @@ export const SignUp = () => {
           .then((res) => {
             console.log(`success to SingUp. ${res}`);
             setToken(res.data.token);
-            navigate("/dashboard")
+            navigate("/dashboard");
           })
           .catch((err) => {
             console.log(`fail to SignUp. ${err}`);
