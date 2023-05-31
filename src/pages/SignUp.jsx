@@ -10,34 +10,58 @@ import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
   const [submitResult, setSubmitResult] = useState('nothing');
   let navigate = useNavigate();
   const schema = yup.object({
     username: yup.string().required(),
     email: yup.string().email().required(),
     icon: yup.mixed().required().test('fileFormat', 'only png & jpg', (value) => {
-      console.log(value); return value && ['image/jpg', 'image/png'].includes(value.type);
+      return value && ['image/jpg', 'image/png', 'image/jpeg'].includes(value.type);
     }),
     password: yup.string().required(),
     passwordConfirm: yup.string().required(),
   })
-  const UploadIcon = () => {
+  const GetUsers = () => {
+    const token_data = {
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2MjA4OTgsImlhdCI6MTY4NTUzNDQ5OCwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiYjUzZWQ5MTctYmYzNS00NmQ1LTliODQtMzgzNTQzNGNjMDc4In0.KbGii-EhtBYPEwMAbhL9I8X_bbEQg-PIniTmjuqlmOM'
+    };
+    const str_data = 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2MjA4OTgsImlhdCI6MTY4NTUzNDQ5OCwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiYjUzZWQ5MTctYmYzNS00NmQ1LTliODQtMzgzNTQzNGNjMDc4In0.KbGii-EhtBYPEwMAbhL9I8X_bbEQg-PIniTmjuqlmOM';
+    const token_data2 = {
+      "Authorization": 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2MjA4OTgsImlhdCI6MTY4NTUzNDQ5OCwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiYjUzZWQ5MTctYmYzNS00NmQ1LTliODQtMzgzNTQzNGNjMDc4In0.KbGii-EhtBYPEwMAbhL9I8X_bbEQg-PIniTmjuqlmOM'
+      
+    }
+    axios({
+      method: 'get',
+      url: `${url}/users`,
+      data: token_data2
+    })
+      .then((res) => {
+        console.log(`success to get users. ${res}`);
+      })
+      .catch((err) => {
+        console.log(`fail to get users. ${err}`);
+        console.log(token_data);
+        console.log(str_data);
+        console.log(err);
+      })
+  }
+  const UploadIcon = (token) => {
     const data = {
-      name: values.username,
-      email: values.email,
-      password: values.password
+      "Content-Type": values.icon.type, 
+      "Authorization": `Bearer ${token}`, 
+      "icon": values.icon, 
     }
     axios
       .post(`${url}/uploads`, data)
       .then((res) => {
-        console.log(`success to SingUp. ${res}`);
-        setToken(res.data.token);
+        console.log(`success to Upload Icon. ${res}`);
         navigate("/dashboard");
       })
       .catch((err) => {
-        console.log(`fail to SignUp. ${err}`);
-        setSubmitResult('fail to SignUp');
+        console.log(`fail to Upload Icon. ${err}`);
+        console.log(data);
+        setSubmitResult('fail to Upload Icon');
       });
   }
 
@@ -60,8 +84,9 @@ export const SignUp = () => {
           .post(`${url}/users`, data)
           .then((res) => {
             console.log(`success to SingUp. ${res}`);
-            setToken(res.data.token);
-            navigate("/dashboard");
+            console.log(`from users post token is ${res.data.token}`)
+            UploadIcon(res.data.token);
+            // navigate("/dashboard");
           })
           .catch((err) => {
             console.log(`fail to SignUp. ${err}`);
@@ -73,7 +98,6 @@ export const SignUp = () => {
 
   const handleIconChange = (e) => {
     const icon = e.target.value;
-    console.log(icon);
 
     const file = e.target.files[0];
     if (!file) {
@@ -83,15 +107,13 @@ export const SignUp = () => {
     new Compressor(file, {
       convertSize: 1000000,
       success(result) {
-        console.log(file);
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
           setIconThumb(reader.result);
         };
         setFieldValue('icon', file);
-        console.log(result);
-        console.log(result.name);
+        console.log(result.name, result.size);
       },
       error(err) {
         console.log(err.message);
@@ -193,6 +215,9 @@ export const SignUp = () => {
         <img className="icon-preview" src={iconThumb} alt={values.icon} />
       </div>
       <p className="submit-result">Submit result: {submitResult}</p>
+      <div>
+        <button onClick={() => {GetUsers()}}>hello</button>
+      </div>
     </>
   );
 };
