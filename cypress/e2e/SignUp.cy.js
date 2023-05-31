@@ -5,23 +5,40 @@ describe("sign up", () => {
     });
     const test_pw = "pass1234";
 
-    it("displays errors on login", () => {
-      cy.get("input[name=email]").type("@email.com");
+    function generateRandomLetter() {
+      const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    
+      return alphabet[Math.floor(Math.random() * alphabet.length)]
+    }
+
+    function generateRandomStrings(n) {
+      let concatenatedString = '';
+      for (let i = 0; i < 3; i++) {
+        concatenatedString += generateRandomLetter();
+      }
+      return concatenatedString;
+    }
+
+    function RandomEmail() {
+      let first_half = generateRandomStrings(3);
+      let second_half = generateRandomStrings(3);
+      const email = first_half + '@' + second_half;
+      return email;
+    }
+
+    it("sing up test", () => {
+      cy.get("input[name=username]").type("tofu");
+      cy.get("input[name=email]").type(RandomEmail());
+      cy.get("input[name=icon]").attachFile('./../../src/icon.png');
       cy.get("input[name=password]").type(test_pw);
-
-      cy.get("p.error").should("be.visible").should("contain", "Error");
-
-      cy.url().should("include", "/");
-    });
-
-    it("not displays errors on login", () => {
-      cy.get("input[name=email]").type("good@email.com");
-      cy.get("input[name=password]").type(test_pw);
-
-      cy.get("p.error").should("be.hidden");
+      cy.get("input[name=passwordConfirm]").type(test_pw);
       cy.get("form").submit();
+      cy.url().should("include", "/dashboard");
 
-      cy.url().should("include", "/home");
     });
+
+    // it("get users test", () => {
+    //   cy.get('.getUserButton').click()
+    // })
   });
 });

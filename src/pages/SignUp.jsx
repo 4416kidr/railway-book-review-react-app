@@ -10,34 +10,51 @@ import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
   const [submitResult, setSubmitResult] = useState('nothing');
+  const [getUserResult, setGetUserResult] = useState('nothing');
   let navigate = useNavigate();
   const schema = yup.object({
     username: yup.string().required(),
     email: yup.string().email().required(),
     icon: yup.mixed().required().test('fileFormat', 'only png & jpg', (value) => {
-      console.log(value); return value && ['image/jpg', 'image/png'].includes(value.type);
+      return value && ['image/jpg', 'image/png', 'image/jpeg'].includes(value.type);
     }),
     password: yup.string().required(),
     passwordConfirm: yup.string().required(),
   })
-  const UploadIcon = () => {
-    const data = {
-      name: values.username,
-      email: values.email,
-      password: values.password
-    }
+  const GetUsers = (token) => {
+      axios({
+        method: 'get',
+        url: '/users',
+        baseURL: `${url}`,
+        headers: {Authorization: `Bearer ${token}`},
+      })
+        .then((res) => {
+          console.log(`success to get users. ${res}`);
+          setSubmitResult('success to get users');
+          UploadIcon(token);
+        })
+        .catch((err) => {
+          console.log(`fail to get users. ${err}`);
+          console.log(err);
+          setSubmitResult('fail to get users');
+        })
+  }
+  const UploadIcon = (token) => {
+    const data = new FormData();
+    data.append("icon", values.icon);
     axios
-      .post(`${url}/uploads`, data)
+      .post(`${url}/uploads`, data, {headers: {Authorization: `Bearer ${token}`}})
       .then((res) => {
-        console.log(`success to SingUp. ${res}`);
-        setToken(res.data.token);
+        console.log(`success to Upload Icon. ${res}`);
+        setSubmitResult('success to Upload Icon');
         navigate("/dashboard");
       })
       .catch((err) => {
-        console.log(`fail to SignUp. ${err}`);
-        setSubmitResult('fail to SignUp');
+        console.log(`fail to Upload Icon. ${err}`);
+        console.log(err);
+        setSubmitResult('fail to Upload Icon');
       });
   }
 
@@ -60,11 +77,12 @@ export const SignUp = () => {
           .post(`${url}/users`, data)
           .then((res) => {
             console.log(`success to SingUp. ${res}`);
-            setToken(res.data.token);
-            navigate("/dashboard");
+            setSubmitResult('success to SignUp')
+            GetUsers(res.data.token);
           })
           .catch((err) => {
             console.log(`fail to SignUp. ${err}`);
+            console.log(err);
             setSubmitResult('fail to SignUp');
           });
       },
@@ -73,7 +91,6 @@ export const SignUp = () => {
 
   const handleIconChange = (e) => {
     const icon = e.target.value;
-    console.log(icon);
 
     const file = e.target.files[0];
     if (!file) {
@@ -83,7 +100,6 @@ export const SignUp = () => {
     new Compressor(file, {
       convertSize: 1000000,
       success(result) {
-        console.log(file);
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
@@ -91,10 +107,9 @@ export const SignUp = () => {
         };
         setFieldValue('icon', file);
         console.log(result);
-        console.log(result.name);
       },
       error(err) {
-        console.log(err.message);
+        console.log(err);
       },
     });
   };
@@ -192,7 +207,10 @@ export const SignUp = () => {
         <p>icon preview</p>
         <img className="icon-preview" src={iconThumb} alt={values.icon} />
       </div>
-      <p className="submit-result">Submit result: {submitResult}</p>
+      <div className="request-result">
+        <p className="submit-result">Submit result: {submitResult}</p>
+        <p className="get-user-result">Submit result: {submitResult}</p>
+      </div>
     </>
   );
 };
