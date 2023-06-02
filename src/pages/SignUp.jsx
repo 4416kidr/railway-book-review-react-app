@@ -1,4 +1,3 @@
-// import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
@@ -10,7 +9,6 @@ import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
-  // const [token, setToken] = useState(null);
   const [submitResult, setSubmitResult] = useState("nothing");
   let navigate = useNavigate();
   const schema = yup.object({
