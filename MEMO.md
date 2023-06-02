@@ -109,3 +109,16 @@
   - `new FileReader()`を用いるのがポイントっぽい
 - [input された image をプレビューする方法](https://zenn.dev/tsucchiiinoko/articles/8d0787b0c1ae8d)
   - `window.URL.createObjectURL(file)`ってのが肝らしい
+
+## Upload Icon
+
+- [axios リクエスト設定](https://axios-http.com/ja/docs/req_config)
+  - API ドキュメントの header は`{headers: {Authorization: your_token}}`のように設定しなくてはならない
+  - `data`に含めて送っても上手くいかない
+    - この問題に気づくのに質問もしながら 1 日かかった
+- [ディベロッパーツールの Netowrk パネル](https://ayudante.jp/column/2022-12-01/15-00/)
+  - ネットワークパネルで通信時にどのようなデータがやり取りされているかを確認する事ができる
+    - Request Headers は`{headers: {Authorization: your_token}}`で設定できる
+- [formData の作り方と送信方法](https://cpoint-lab.co.jp/article/202003/14609/)
+  - `const your_data = new FormData(); data.append('mail', 'example@example.com')`のように作成する
+  - `axios({url: your_url, method: 'post', data: your_data, headers: {Authorization: your_token}})`のようにして送信する

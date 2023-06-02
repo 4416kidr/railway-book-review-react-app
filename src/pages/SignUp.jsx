@@ -3,60 +3,66 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
 import { useFormik } from "formik";
-import * as yup from 'yup';
+import * as yup from "yup";
 import axios from "axios";
-import {url} from "../const.js";
+import { url } from "../const.js";
 import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
   // const [token, setToken] = useState(null);
-  const [submitResult, setSubmitResult] = useState('nothing');
-  const [getUserResult, setGetUserResult] = useState('nothing');
+  const [submitResult, setSubmitResult] = useState("nothing");
   let navigate = useNavigate();
   const schema = yup.object({
     username: yup.string().required(),
     email: yup.string().email().required(),
-    icon: yup.mixed().required().test('fileFormat', 'only png & jpg', (value) => {
-      return value && ['image/jpg', 'image/png', 'image/jpeg'].includes(value.type);
-    }),
+    icon: yup
+      .mixed()
+      .required()
+      .test("fileFormat", "only png & jpg", (value) => {
+        return (
+          value && ["image/jpg", "image/png", "image/jpeg"].includes(value.type)
+        );
+      }),
     password: yup.string().required(),
     passwordConfirm: yup.string().required(),
-  })
+  });
   const GetUsers = (token) => {
-      axios({
-        method: 'get',
-        url: '/users',
-        baseURL: `${url}`,
-        headers: {Authorization: `Bearer ${token}`},
+    axios({
+      method: "get",
+      url: "/users",
+      baseURL: `${url}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        console.log(`success to get users. ${res}`);
+        setSubmitResult("success to get users");
+        UploadIcon(token);
       })
-        .then((res) => {
-          console.log(`success to get users. ${res}`);
-          setSubmitResult('success to get users');
-          UploadIcon(token);
-        })
-        .catch((err) => {
-          console.log(`fail to get users. ${err}`);
-          console.log(err);
-          setSubmitResult('fail to get users');
-        })
-  }
+      .catch((err) => {
+        console.log(`fail to get users. ${err}`);
+        console.log(err);
+        setSubmitResult("fail to get users");
+      });
+  };
   const UploadIcon = (token) => {
     const data = new FormData();
     data.append("icon", values.icon);
     axios
-      .post(`${url}/uploads`, data, {headers: {Authorization: `Bearer ${token}`}})
+      .post(`${url}/uploads`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log(`success to Upload Icon. ${res}`);
-        setSubmitResult('success to Upload Icon');
+        setSubmitResult("success to Upload Icon");
         navigate("/dashboard");
       })
       .catch((err) => {
         console.log(`fail to Upload Icon. ${err}`);
         console.log(err);
-        setSubmitResult('fail to Upload Icon');
+        setSubmitResult("fail to Upload Icon");
       });
-  }
+  };
 
   const { handleChange, handleSubmit, values, errors, setFieldValue } =
     useFormik({
@@ -71,27 +77,25 @@ export const SignUp = () => {
         const data = {
           name: values.username,
           email: values.email,
-          password: values.password
-        }
+          password: values.password,
+        };
         axios
           .post(`${url}/users`, data)
           .then((res) => {
             console.log(`success to SingUp. ${res}`);
-            setSubmitResult('success to SignUp')
+            setSubmitResult("success to SignUp");
             GetUsers(res.data.token);
           })
           .catch((err) => {
             console.log(`fail to SignUp. ${err}`);
             console.log(err);
-            setSubmitResult('fail to SignUp');
+            setSubmitResult("fail to SignUp");
           });
       },
       validationSchema: schema,
     });
 
   const handleIconChange = (e) => {
-    const icon = e.target.value;
-
     const file = e.target.files[0];
     if (!file) {
       return;
@@ -105,7 +109,7 @@ export const SignUp = () => {
         reader.onload = () => {
           setIconThumb(reader.result);
         };
-        setFieldValue('icon', file);
+        setFieldValue("icon", file);
         console.log(result);
       },
       error(err) {
@@ -184,7 +188,7 @@ export const SignUp = () => {
           />
           {errors.password && (
             <div className="form-errors">{errors.password}</div>
-            )}
+          )}
         </div>
         <div>
           <label htmlFor="passwordConfirm">Password Confirm</label>
