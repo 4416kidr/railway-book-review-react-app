@@ -1,46 +1,45 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import * as yup from 'yup';
-import axios from 'axios';
-import {url} from '../const';
+import * as yup from "yup";
+import axios from "axios";
+import { url } from "../const";
 import "./LogIn.scss";
 
 export const LogIn = () => {
   let navigate = useNavigate();
   const [token, setToken] = useState(null);
-  const [submitResult, setSubmitResult] = useState('nothing');
+  const [submitResult, setSubmitResult] = useState("nothing");
   const schema = yup.object({
     email: yup.string().email().required(),
     password: yup.string().required(),
-  })
-  const { handleChange, handleSubmit, values, errors} =
-    useFormik({
-      initialValues: {
-        email: "",
-        password: "",
-      },
-      onSubmit: (values) => {
-        console.log(values);
-        const data = {
-          email: values.email,
-          password: values.password
-        }
-        axios
-          .post(`${url}/signin`, data)
-          .then((res) => {
-            console.log(`success to SingIn`);
-            setToken(res.data.token);
-            navigate("/dashboard")
-          })
-          .catch((err) => {
-            console.log(`fail to SignIn.`);
-            console.log(err);
-            setSubmitResult('fail to SingIn');
-          });
-      },
-      validationSchema: schema,
-    });
+  });
+  const { handleChange, handleSubmit, values, errors } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      const data = {
+        email: values.email,
+        password: values.password,
+      };
+      axios
+        .post(`${url}/signin`, data)
+        .then((res) => {
+          console.log(`success to SingIn`);
+          setToken(res.data.token);
+          navigate("/dashboard");
+        })
+        .catch((err) => {
+          console.log(`fail to SignIn.`);
+          console.log(err);
+          setSubmitResult("fail to SingIn");
+        });
+    },
+    validationSchema: schema,
+  });
   return (
     <>
       <h1>This is Log In Page</h1>

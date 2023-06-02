@@ -3,67 +3,66 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
 import { useFormik } from "formik";
-import * as yup from 'yup';
+import * as yup from "yup";
 import axios from "axios";
-import {url} from "../const.js";
+import { url } from "../const.js";
 import "./SignUp.scss";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
   // const [token, setToken] = useState(null);
-  const [submitResult, setSubmitResult] = useState('nothing');
+  const [submitResult, setSubmitResult] = useState("nothing");
   let navigate = useNavigate();
   const schema = yup.object({
     username: yup.string().required(),
     email: yup.string().email().required(),
-    icon: yup.mixed().required().test('fileFormat', 'only png & jpg', (value) => {
-      return value && ['image/jpg', 'image/png', 'image/jpeg'].includes(value.type);
-    }),
+    icon: yup
+      .mixed()
+      .required()
+      .test("fileFormat", "only png & jpg", (value) => {
+        return (
+          value && ["image/jpg", "image/png", "image/jpeg"].includes(value.type)
+        );
+      }),
     password: yup.string().required(),
     passwordConfirm: yup.string().required(),
-  })
-  const GetUsers = () => {
-    const token_data = {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2MjA4OTgsImlhdCI6MTY4NTUzNDQ5OCwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiYjUzZWQ5MTctYmYzNS00NmQ1LTliODQtMzgzNTQzNGNjMDc4In0.KbGii-EhtBYPEwMAbhL9I8X_bbEQg-PIniTmjuqlmOM'
-    };
-    const str_data = 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2MjA4OTgsImlhdCI6MTY4NTUzNDQ5OCwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiYjUzZWQ5MTctYmYzNS00NmQ1LTliODQtMzgzNTQzNGNjMDc4In0.KbGii-EhtBYPEwMAbhL9I8X_bbEQg-PIniTmjuqlmOM';
-    const token_data2 = {
-      "Authorization": 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2MjA4OTgsImlhdCI6MTY4NTUzNDQ5OCwic3ViIjoiNTQ1NDY1NTczNTQiLCJ1c2VyX2lkIjoiYjUzZWQ5MTctYmYzNS00NmQ1LTliODQtMzgzNTQzNGNjMDc4In0.KbGii-EhtBYPEwMAbhL9I8X_bbEQg-PIniTmjuqlmOM'
-      
-    }
+  });
+  const GetUsers = (token) => {
     axios({
-      method: 'get',
-      url: `${url}/users`,
-      data: token_data2
+      method: "get",
+      url: "/users",
+      baseURL: `${url}`,
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
         console.log(`success to get users. ${res}`);
+        setSubmitResult("success to get users");
+        UploadIcon(token);
       })
       .catch((err) => {
         console.log(`fail to get users. ${err}`);
-        console.log(token_data);
-        console.log(str_data);
         console.log(err);
-      })
-  }
+        setSubmitResult("fail to get users");
+      });
+  };
   const UploadIcon = (token) => {
-    const data = {
-      "Content-Type": values.icon.type, 
-      "Authorization": `Bearer ${token}`, 
-      "icon": values.icon, 
-    }
+    const data = new FormData();
+    data.append("icon", values.icon);
     axios
-      .post(`${url}/uploads`, data)
+      .post(`${url}/uploads`, data, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((res) => {
         console.log(`success to Upload Icon. ${res}`);
+        setSubmitResult("success to Upload Icon");
         navigate("/dashboard");
       })
       .catch((err) => {
         console.log(`fail to Upload Icon. ${err}`);
-        console.log(data);
-        setSubmitResult('fail to Upload Icon');
+        console.log(err);
+        setSubmitResult("fail to Upload Icon");
       });
-  }
+  };
 
   const { handleChange, handleSubmit, values, errors, setFieldValue } =
     useFormik({
@@ -78,27 +77,25 @@ export const SignUp = () => {
         const data = {
           name: values.username,
           email: values.email,
-          password: values.password
-        }
+          password: values.password,
+        };
         axios
           .post(`${url}/users`, data)
           .then((res) => {
             console.log(`success to SingUp. ${res}`);
-            console.log(`from users post token is ${res.data.token}`)
-            UploadIcon(res.data.token);
-            // navigate("/dashboard");
+            setSubmitResult("success to SignUp");
+            GetUsers(res.data.token);
           })
           .catch((err) => {
             console.log(`fail to SignUp. ${err}`);
-            setSubmitResult('fail to SignUp');
+            console.log(err);
+            setSubmitResult("fail to SignUp");
           });
       },
       validationSchema: schema,
     });
 
   const handleIconChange = (e) => {
-    const icon = e.target.value;
-
     const file = e.target.files[0];
     if (!file) {
       return;
@@ -112,11 +109,11 @@ export const SignUp = () => {
         reader.onload = () => {
           setIconThumb(reader.result);
         };
-        setFieldValue('icon', file);
-        console.log(result.name, result.size);
+        setFieldValue("icon", file);
+        console.log(result);
       },
       error(err) {
-        console.log(err.message);
+        console.log(err);
       },
     });
   };
@@ -191,7 +188,7 @@ export const SignUp = () => {
           />
           {errors.password && (
             <div className="form-errors">{errors.password}</div>
-            )}
+          )}
         </div>
         <div>
           <label htmlFor="passwordConfirm">Password Confirm</label>
@@ -214,9 +211,9 @@ export const SignUp = () => {
         <p>icon preview</p>
         <img className="icon-preview" src={iconThumb} alt={values.icon} />
       </div>
-      <p className="submit-result">Submit result: {submitResult}</p>
-      <div>
-        <button onClick={() => {GetUsers()}}>hello</button>
+      <div className="request-result">
+        <p className="submit-result">Submit result: {submitResult}</p>
+        <p className="get-user-result">Submit result: {submitResult}</p>
       </div>
     </>
   );
