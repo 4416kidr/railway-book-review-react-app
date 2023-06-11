@@ -30,7 +30,10 @@ export const LogIn = () => {
         .then((res) => {
           console.log(`success to SingIn`);
           setToken(res.data.token);
-          navigate("/main");
+          console.log(res.data.token);
+          navigate("/main", {
+            token: res.data.token,
+          });
         })
         .catch((err) => {
           console.log(`fail to SignIn.`);
