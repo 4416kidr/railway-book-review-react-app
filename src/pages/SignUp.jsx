@@ -53,6 +53,10 @@ export const SignUp = () => {
       .then((res) => {
         console.log(`success to Upload Icon. ${res}`);
         setSubmitResult("success to Upload Icon");
+        console.log(`Bearer ${token}`);
+        console.log(`username: ${values.username}`);
+        console.log(`email: ${values.email}`);
+        console.log(`password: ${values.password}`);
         navigate("/main");
       })
       .catch((err) => {
