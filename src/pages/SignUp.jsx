@@ -53,7 +53,7 @@ export const SignUp = () => {
       .then((res) => {
         console.log(`success to Upload Icon. ${res}`);
         setSubmitResult("success to Upload Icon");
-        navigate("/dashboard");
+        navigate("/main");
       })
       .catch((err) => {
         console.log(`fail to Upload Icon. ${err}`);
@@ -120,10 +120,10 @@ export const SignUp = () => {
       <h1>This is Sign Up</h1>
       <button
         onClick={() => {
-          navigate("/dashboard");
+          navigate("/main");
         }}
       >
-        to dashboard
+        to main
       </button>
       <button
         onClick={() => {

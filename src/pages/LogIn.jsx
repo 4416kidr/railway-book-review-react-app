@@ -30,7 +30,7 @@ export const LogIn = () => {
         .then((res) => {
           console.log(`success to SingIn`);
           setToken(res.data.token);
-          navigate("/dashboard");
+          navigate("/main");
         })
         .catch((err) => {
           console.log(`fail to SignIn.`);
@@ -45,10 +45,10 @@ export const LogIn = () => {
       <h1>This is Log In Page</h1>
       <button
         onClick={() => {
-          navigate("/dashboard");
+          navigate("/main");
         }}
       >
-        to dashboard
+        to main
       </button>
       <button
         onClick={() => {

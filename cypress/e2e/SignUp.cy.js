@@ -33,7 +33,7 @@ describe("sign up", () => {
       cy.get("input[name=password]").type(test_pw);
       cy.get("input[name=passwordConfirm]").type(test_pw);
       cy.get("form").submit();
-      cy.url().should("include", "/dashboard");
+      cy.url().should("include", "/main");
     });
 
     // it("get users test", () => {
