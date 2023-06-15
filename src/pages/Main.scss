@@ -1,8 +1,23 @@
 .card {
   border: solid;
-  border-color: aqua;
+  border-color: black;
   .card__title {
     color: red;
     font-weight: bolder;
   }
+  .card__reviewer {
+    background-color: aquamarine;
+    border: solid 2px;
+    border-color: white;
+  }
+  .card__url {
+    border: solid 2px;
+    border-color: white;
+  }
+}
+
+.url_and_reviewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
