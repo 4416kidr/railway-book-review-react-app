@@ -131,7 +131,7 @@
 - isSignIn の実装
   - サインインしているかどうかを Redux と cookie で制御する
 
-## AuthGuard
+## Auth
 
 - [Redux(リダックス)のインストール](https://redux.js.org/introduction/getting-started)
   - `yarn add @reduxjs/toolkit`
@@ -146,3 +146,8 @@
   - `const dispatch = useDispatch();`と`const [cookies, setCookies, removeCookie] = useCookies();`で初期化
   - `setCookies("token", token)`と`dispatch(signIn())`で保持
   - 同様にログアウト処理も追加
+
+## BEM (Block Element Modifier)
+
+- [ゼロからわかる BEM 超入門(Zenn やっぷ)](https://zenn.dev/nagan/articles/dac6fa662f4dab)
+- [BEM の基本概念とルール(CodeGrid)](https://www.codegrid.net/articles/bem-basic-1/)
