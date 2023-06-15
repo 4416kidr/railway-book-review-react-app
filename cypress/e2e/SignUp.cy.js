@@ -26,7 +26,7 @@ describe("sign up", () => {
       return email;
     }
 
-    it("sing up test", () => {
+    it("sign up test", () => {
       cy.get("input[name=username]").type("tofu");
       cy.get("input[name=email]").type(RandomEmail());
       cy.get("input[name=icon]").attachFile("./../../src/icon.png");
