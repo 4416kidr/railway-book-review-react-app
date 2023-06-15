@@ -62,19 +62,28 @@ export const Main = () => {
         <p className="now_card_view">
           {viewOffset}~{viewOffset + 10}を表示中
         </p>
-        {booksList.map((e, index) => {
-          return (
-            <div className="card" key={e.id}>
-              <p className="card__title">{e.title}</p>
-              <p className="card__detail">detail: {e.detail}</p>
-              <p className="card__review">review: {e.review}</p>
-              <p className="card__reviewer">reviewer: {e.reviewer}</p>
-              <a className="card__url" href={e.url}>
-                url
-              </a>
-            </div>
-          );
-        })}
+        <div className="cards_lists">
+          {booksList.map((e, index) => {
+            return (
+              <div className="card" key={e.id}>
+                <h2 className="card__title">{e.title}</h2>
+                <div className="url_and_reviewer">
+                  <p className="card__reviewer">by {e.reviewer}</p>
+                  <a className="card__url" href={e.url}>
+                    url
+                  </a>
+                </div>
+                <p className="card__detail">
+                  detail <br />
+                  {e.detail}
+                </p>
+                <p className="card__review">
+                  review <br /> {e.review}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
       <button
         className="next_view_offset"
