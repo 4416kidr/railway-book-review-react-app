@@ -122,3 +122,19 @@
 - [formData の作り方と送信方法](https://cpoint-lab.co.jp/article/202003/14609/)
   - `const your_data = new FormData(); data.append('mail', 'example@example.com')`のように作成する
   - `axios({url: your_url, method: 'post', data: your_data, headers: {Authorization: your_token}})`のようにして送信する
+
+# Station4
+## MainPage
+- axiosを用いて、APIと通信してレビュー一覧を取得
+- isSingInの実装
+  - サインインしているかどうかをReduxとcookieで制御する
+## AuthGuard
+- [Redux(リダックス)のインストール](https://redux.js.org/introduction/getting-started)
+  - `yarn add @reduxjs/toolkit`
+    - `yarn add react-redux`
+      - `add @reduxjs/toolkit`をインストールしたら`react-redux`もインストールされるかもしれないので、不要かもしれない（逆の順番でインストールしたので、未検証）
+- [react-cookieのインストール](https://yarnpkg.com/package/react-cookie)
+  - `yarn add react-cookie`
+- `store.js`と`authSlice.js`の作成
+- 全ての元である`index.js`で`react-redux`と`react-cookie`を使うことを明記
+  - `<Provider>`と`<CookiesProvider>`
