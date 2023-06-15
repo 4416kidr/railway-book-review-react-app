@@ -5,12 +5,17 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
 import { url } from "../const.js";
+import { useDispatch } from "react-redux";
+import { useCookies } from "react-cookie";
 import "./SignUp.scss";
+import { signIn } from "authSlice.js";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
   const [submitResult, setSubmitResult] = useState("nothing");
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [cookies, setCookies, removeCookie] = useCookies();
   const schema = yup.object({
     username: yup.string().required(),
     email: yup.string().email().required(),
@@ -57,6 +62,8 @@ export const SignUp = () => {
         console.log(`username: ${values.username}`);
         console.log(`email: ${values.email}`);
         console.log(`password: ${values.password}`);
+        setCookies("token", token);
+        dispatch(signIn());
         navigate("/main");
       })
       .catch((err) => {
@@ -84,7 +91,7 @@ export const SignUp = () => {
         axios
           .post(`${url}/users`, data)
           .then((res) => {
-            console.log(`success to SingUp. ${res}`);
+            console.log(`success to SignUp. ${res}`);
             setSubmitResult("success to SignUp");
             GetUsers(res.data.token);
           })

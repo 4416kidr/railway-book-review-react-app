@@ -124,17 +124,25 @@
   - `axios({url: your_url, method: 'post', data: your_data, headers: {Authorization: your_token}})`のようにして送信する
 
 # Station4
+
 ## MainPage
-- axiosを用いて、APIと通信してレビュー一覧を取得
-- isSingInの実装
-  - サインインしているかどうかをReduxとcookieで制御する
+
+- axios を用いて、API と通信してレビュー一覧を取得
+- isSignIn の実装
+  - サインインしているかどうかを Redux と cookie で制御する
+
 ## AuthGuard
+
 - [Redux(リダックス)のインストール](https://redux.js.org/introduction/getting-started)
   - `yarn add @reduxjs/toolkit`
     - `yarn add react-redux`
       - `add @reduxjs/toolkit`をインストールしたら`react-redux`もインストールされるかもしれないので、不要かもしれない（逆の順番でインストールしたので、未検証）
-- [react-cookieのインストール](https://yarnpkg.com/package/react-cookie)
+- [react-cookie のインストール](https://yarnpkg.com/package/react-cookie)
   - `yarn add react-cookie`
 - `store.js`と`authSlice.js`の作成
 - 全ての元である`index.js`で`react-redux`と`react-cookie`を使うことを明記
   - `<Provider>`と`<CookiesProvider>`
+- LogIn と SignUp で`cookie`と`authSlice`を用いて`token`を保持するようにした
+  - `const dispatch = useDispatch();`と`const [cookies, setCookies, removeCookie] = useCookies();`で初期化
+  - `setCookies("token", token)`と`dispatch(signIn())`で保持
+  - 同様にログアウト処理も追加
