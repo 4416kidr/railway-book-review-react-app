@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Compressor from "compressorjs";
 import { useFormik } from "formik";
@@ -9,13 +9,17 @@ import { useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import "./SignUp.scss";
 import { signIn } from "authSlice.js";
+import { useSelector } from "react-redux";
 
 export const SignUp = () => {
   const [iconThumb, setIconThumb] = useState(null);
   const [submitResult, setSubmitResult] = useState("nothing");
+  const [redirectDelaySecond, setRedirectDelaySecond] = useState(0);
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const [cookies, setCookies, removeCookie] = useCookies();
+  const auth = useSelector((state) => state.auth.isSignIn);
+
   const schema = yup.object({
     username: yup.string().required(),
     email: yup.string().email().required(),
@@ -126,6 +130,29 @@ export const SignUp = () => {
       },
     });
   };
+  useEffect(() => {
+    if (redirectDelaySecond > 0) {
+      setInterval(() => {
+        setRedirectDelaySecond(redirectDelaySecond-1);
+      }, 1000)
+    }
+  }, [redirectDelaySecond]);
+
+  if (auth) {
+    if (redirectDelaySecond <= 0) {
+      setRedirectDelaySecond(5);
+    }
+    setTimeout(() => {
+      navigate("/main")
+    }, 5000)
+    return (
+      <>
+        <h1>This is Sing Up Page</h1>
+        <p>You are already Log In</p>
+        <p>You will be redirected to Main Page after {redirectDelaySecond} seconds.</p>
+      </>
+    )
+  }
   return (
     <>
       <h1>This is Sign Up</h1>

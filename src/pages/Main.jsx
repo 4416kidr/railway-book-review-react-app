@@ -8,7 +8,6 @@ import { signOut } from "../authSlice";
 import { useNavigate } from "react-router-dom";
 
 const CardsLists = (props) => {
-  console.log(props);
   return (
     <div className="cards_lists">
       {props.cards.map((e, index) => {
@@ -36,41 +35,69 @@ const CardsLists = (props) => {
 };
 
 export const Main = () => {
-  const auth = useSelector((state) => state.auth.isSignIn);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [booksList, setBooksList] = useState(null);
   const [viewOffset, setViewOffset] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [noContents, setNoContents] = useState(false);
   const [cookies, setCookies, removeCookie] = useCookies();
-  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.isSignIn);
   const handleLogOut = (e) => {
     removeCookie("token");
+    removeCookie("username");
     dispatch(signOut());
   };
   useEffect(() => {
-    axios
-      .get(`${url}/books`, {
-        params: {
-          offset: viewOffset,
-        },
+    if (auth) {
+      axios
+        .get(`${url}/books`, {
+          params: {
+            offset: viewOffset,
+          },
+          headers: { Authorization: `Bearer ${cookies.token}` },
+        })
+        .then((res) => {
+          const list = res.data;
+          setBooksList(list);
+          if (list.length === 0) {
+            setNoContents(true);
+          } else {
+            setNoContents(false);
+          }
+          console.log("success to get book list");
+          console.log(list);
+        })
+        .catch((err) => {
+          console.log("fail to get book list");
+          console.log(err);
+        });
+      } else {
+        console.log("you can not get book list because you are not login.")
+      }
+  }, [viewOffset]);
+  useEffect(() => {
+    if (auth) {
+      axios({
+        method: "get",
+        url: "/users",
+        baseURL: `${url}`,
         headers: { Authorization: `Bearer ${cookies.token}` },
       })
-      .then((res) => {
-        const list = res.data;
-        setBooksList(list);
-        if (list.length === 0) {
-          setNoContents(true);
-        } else {
-          setNoContents(false);
-        }
-        console.log(list);
-        console.log("result ok");
-      })
-      .catch((err) => {
-        console.log("result error");
-      });
-  }, [viewOffset]);
+        .then((res) => {
+          console.log(`success to get users.`);
+          console.log(res);
+          setCookies("username", res.data.name);
+          return res.data
+        })
+        .catch((err) => {
+          console.log(`fail to get users.`);
+          console.log(err);
+          return err
+        });
+    } else {
+      console.log("you can not get user name because you are not login.");
+    }
+  }, [auth])
 
   const handleViewOffset = (diff) => {
     if (diff === 0) {

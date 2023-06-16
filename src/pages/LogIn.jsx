@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -10,12 +10,13 @@ import { useCookies } from "react-cookie";
 import { signIn } from "../authSlice";
 
 export const LogIn = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [token, setToken] = useState(null);
   const [submitResult, setSubmitResult] = useState("nothing");
-  const auth = useSelector((state) => state.auth.isSignIn);
-  const dispatch = useDispatch();
+  const [redirectDelaySecond, setRedirectDelaySecond] = useState(0);
   const [cookies, setCookies, removeCookie] = useCookies();
+  const auth = useSelector((state) => state.auth.isSignIn);
   let firstPhrase = "please login first";
   if (auth) {
     firstPhrase = "you're already login";
@@ -55,6 +56,30 @@ export const LogIn = () => {
     },
     validationSchema: schema,
   });
+  useEffect(() => {
+    if (redirectDelaySecond > 0) {
+      setInterval(() => {
+        setRedirectDelaySecond(redirectDelaySecond-1);
+      }, 1000)
+    }
+  }, [redirectDelaySecond]);
+
+  if (auth) {
+    if (redirectDelaySecond <= 0) {
+      setRedirectDelaySecond(5);
+    }
+    setTimeout(() => {
+      navigate("/main")
+    }, 5000)
+    return (
+      <>
+        <h1>This is Log In Page</h1>
+        <p>You are already Log In</p>
+        <p>You will be redirected to Main Page after {redirectDelaySecond} seconds.</p>
+      </>
+    )
+  }
+  
   return (
     <>
       <h1>This is Log In Page</h1>

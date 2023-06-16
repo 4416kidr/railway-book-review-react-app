@@ -8,9 +8,28 @@ header {
   .app-title {
     color: white;
     padding-left: 20px;
+    text-decoration: none;
+    border: none;
   }
   a {
     color: white;
     padding-right: 20px;
   }
+}
+
+.login_status {
+  font-size: large;
+  font-weight: bold;
+  color: white;
+}
+
+.to_login_button {
+  font-weight: bold;
+  padding: 10px;
+  justify-content: center;
+  background-color: black;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  text-decoration: none;
 }
