@@ -1,0 +1,48 @@
+.card {
+  border: solid;
+  border-color: black;
+  .card__title {
+    color: red;
+    font-weight: bolder;
+  }
+  .card__reviewer {
+    background-color: aquamarine;
+    border: solid 2px;
+    border-color: white;
+  }
+  .card__url {
+    border: solid 2px;
+    border-color: white;
+  }
+}
+
+.url_and_reviewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paginator {
+  background-color: greenyellow;
+  display: flex;
+  justify-content: center;
+  button {
+    padding: 2px 10px;
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 30px;
+    color: blue;
+    font-weight: bold;
+  }
+  span {
+    padding: 2px 10px;
+    color: black;
+    font-weight: bold;
+  }
+  .current_page {
+    border: solid;
+    border-radius: 50%;
+    background-color: rebeccapurple;
+    color: red;
+  }
+}

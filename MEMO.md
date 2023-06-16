@@ -122,3 +122,32 @@
 - [formData の作り方と送信方法](https://cpoint-lab.co.jp/article/202003/14609/)
   - `const your_data = new FormData(); data.append('mail', 'example@example.com')`のように作成する
   - `axios({url: your_url, method: 'post', data: your_data, headers: {Authorization: your_token}})`のようにして送信する
+
+# Station4
+
+## MainPage
+
+- axios を用いて、API と通信してレビュー一覧を取得
+- isSignIn の実装
+  - サインインしているかどうかを Redux と cookie で制御する
+
+## Auth
+
+- [Redux(リダックス)のインストール](https://redux.js.org/introduction/getting-started)
+  - `yarn add @reduxjs/toolkit`
+    - `yarn add react-redux`
+      - `add @reduxjs/toolkit`をインストールしたら`react-redux`もインストールされるかもしれないので、不要かもしれない（逆の順番でインストールしたので、未検証）
+- [react-cookie のインストール](https://yarnpkg.com/package/react-cookie)
+  - `yarn add react-cookie`
+- `store.js`と`authSlice.js`の作成
+- 全ての元である`index.js`で`react-redux`と`react-cookie`を使うことを明記
+  - `<Provider>`と`<CookiesProvider>`
+- LogIn と SignUp で`cookie`と`authSlice`を用いて`token`を保持するようにした
+  - `const dispatch = useDispatch();`と`const [cookies, setCookies, removeCookie] = useCookies();`で初期化
+  - `setCookies("token", token)`と`dispatch(signIn())`で保持
+  - 同様にログアウト処理も追加
+
+## BEM (Block Element Modifier)
+
+- [ゼロからわかる BEM 超入門(Zenn やっぷ)](https://zenn.dev/nagan/articles/dac6fa662f4dab)
+- [BEM の基本概念とルール(CodeGrid)](https://www.codegrid.net/articles/bem-basic-1/)

@@ -5,11 +5,21 @@ import * as yup from "yup";
 import axios from "axios";
 import { url } from "../const";
 import "./LogIn.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
+import { signIn } from "../authSlice";
 
 export const LogIn = () => {
   let navigate = useNavigate();
   const [token, setToken] = useState(null);
   const [submitResult, setSubmitResult] = useState("nothing");
+  const auth = useSelector((state) => state.auth.isSignIn);
+  const dispatch = useDispatch();
+  const [cookies, setCookies, removeCookie] = useCookies();
+  let firstPhrase = "please login first";
+  if (auth) {
+    firstPhrase = "you're already login";
+  }
   const schema = yup.object({
     email: yup.string().email().required(),
     password: yup.string().required(),
@@ -28,14 +38,19 @@ export const LogIn = () => {
       axios
         .post(`${url}/signin`, data)
         .then((res) => {
-          console.log(`success to SingIn`);
+          console.log(`success to SignIn`);
           setToken(res.data.token);
-          navigate("/main");
+          setCookies("token", res.data.token);
+          dispatch(signIn());
+          console.log(res.data.token);
+          navigate("/main", {
+            token: res.data.token,
+          });
         })
         .catch((err) => {
           console.log(`fail to SignIn.`);
           console.log(err);
-          setSubmitResult("fail to SingIn");
+          setSubmitResult("fail to SignIn");
         });
     },
     validationSchema: schema,
@@ -43,6 +58,7 @@ export const LogIn = () => {
   return (
     <>
       <h1>This is Log In Page</h1>
+      <p className="please-login">{firstPhrase}</p>
       <button
         onClick={() => {
           navigate("/main");
