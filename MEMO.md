@@ -151,3 +151,15 @@
 
 - [ゼロからわかる BEM 超入門(Zenn やっぷ)](https://zenn.dev/nagan/articles/dac6fa662f4dab)
 - [BEM の基本概念とルール(CodeGrid)](https://www.codegrid.net/articles/bem-basic-1/)
+
+# Station6
+
+- リロードしてもログイン状態を保持できるようにするために`cookies`を利用した
+  - こちらは Station4 で実装済み
+- ヘッダーへのユーザ名表示には`cookies`を利用した
+- ログインボタンは`Home.jsx`を参考に実装した
+- ログイン済みの時のリダイレクトには`navigate()`を利用した
+  - [TodoApp](https://github.com/4416kidr/railway-todo-app/blob/clean_working/src/pages/HomeTasks.jsx)
+    - こちらを参考にリダイレクトまでの残り時間を表示するようにした
+  - `navigate()`のような関数型の方が便利な場合もある
+- ユーザー作成とログイン成功時のリダイレクトはすでに Station4 で実装済み

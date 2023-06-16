@@ -59,8 +59,8 @@ export const LogIn = () => {
   useEffect(() => {
     if (redirectDelaySecond > 0) {
       setInterval(() => {
-        setRedirectDelaySecond(redirectDelaySecond-1);
-      }, 1000)
+        setRedirectDelaySecond(redirectDelaySecond - 1);
+      }, 1000);
     }
   }, [redirectDelaySecond]);
 
@@ -69,17 +69,20 @@ export const LogIn = () => {
       setRedirectDelaySecond(5);
     }
     setTimeout(() => {
-      navigate("/main")
-    }, 5000)
+      navigate("/main");
+    }, 5000);
     return (
       <>
         <h1>This is Log In Page</h1>
         <p>You are already Log In</p>
-        <p>You will be redirected to Main Page after {redirectDelaySecond} seconds.</p>
+        <p>
+          You will be redirected to Main Page after {redirectDelaySecond}{" "}
+          seconds.
+        </p>
       </>
-    )
+    );
   }
-  
+
   return (
     <>
       <h1>This is Log In Page</h1>

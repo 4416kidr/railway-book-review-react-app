@@ -4,21 +4,20 @@ import Compressor from "compressorjs";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
-import { url } from "../const.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
-import "./SignUp.scss";
+import { url } from "../const.js";
 import { signIn } from "authSlice.js";
-import { useSelector } from "react-redux";
+import "./SignUp.scss";
 
 export const SignUp = () => {
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth.isSignIn);
   const [iconThumb, setIconThumb] = useState(null);
   const [submitResult, setSubmitResult] = useState("nothing");
   const [redirectDelaySecond, setRedirectDelaySecond] = useState(0);
-  let navigate = useNavigate();
-  const dispatch = useDispatch();
   const [cookies, setCookies, removeCookie] = useCookies();
-  const auth = useSelector((state) => state.auth.isSignIn);
 
   const schema = yup.object({
     username: yup.string().required(),
@@ -133,8 +132,8 @@ export const SignUp = () => {
   useEffect(() => {
     if (redirectDelaySecond > 0) {
       setInterval(() => {
-        setRedirectDelaySecond(redirectDelaySecond-1);
-      }, 1000)
+        setRedirectDelaySecond(redirectDelaySecond - 1);
+      }, 1000);
     }
   }, [redirectDelaySecond]);
 
@@ -143,15 +142,18 @@ export const SignUp = () => {
       setRedirectDelaySecond(5);
     }
     setTimeout(() => {
-      navigate("/main")
-    }, 5000)
+      navigate("/main");
+    }, 5000);
     return (
       <>
         <h1>This is Sing Up Page</h1>
         <p>You are already Log In</p>
-        <p>You will be redirected to Main Page after {redirectDelaySecond} seconds.</p>
+        <p>
+          You will be redirected to Main Page after {redirectDelaySecond}{" "}
+          seconds.
+        </p>
       </>
-    )
+    );
   }
   return (
     <>

@@ -9,9 +9,18 @@ export const Header = () => {
   return (
     <>
       <header>
-        <h1><Link to="/" className="app-title">書籍レビューアプリ</Link></h1>
-        {auth ? (<p className="login_status">Welcome {cookies.username}</p>): (
-          <Link to="/login" className="to_login_button">LogIn</Link>)}
+        <h1>
+          <Link to="/" className="app-title">
+            書籍レビューアプリ
+          </Link>
+        </h1>
+        {auth ? (
+          <p className="login_status">Welcome {cookies.username}</p>
+        ) : (
+          <Link to="/login" className="to_login_button">
+            LogIn
+          </Link>
+        )}
         <Link to="/">Topに戻る</Link>
       </header>
     </>

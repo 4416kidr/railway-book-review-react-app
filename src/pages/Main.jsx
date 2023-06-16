@@ -71,9 +71,9 @@ export const Main = () => {
           console.log("fail to get book list");
           console.log(err);
         });
-      } else {
-        console.log("you can not get book list because you are not login.")
-      }
+    } else {
+      console.log("you can not get book list because you are not login.");
+    }
   }, [viewOffset]);
   useEffect(() => {
     if (auth) {
@@ -87,17 +87,17 @@ export const Main = () => {
           console.log(`success to get users.`);
           console.log(res);
           setCookies("username", res.data.name);
-          return res.data
+          return res.data;
         })
         .catch((err) => {
           console.log(`fail to get users.`);
           console.log(err);
-          return err
+          return err;
         });
     } else {
       console.log("you can not get user name because you are not login.");
     }
-  }, [auth])
+  }, [auth]);
 
   const handleViewOffset = (diff) => {
     if (diff === 0) {
