@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetUser, GetBooks } from "components/Api";
+import { GetUser, GetBooks, useGetBooks } from "components/Api";
 import { signOut } from "../authSlice";
-import { url } from "const";
 import "./Main.scss";
 
 const CardsLists = (props) => {
@@ -37,10 +36,10 @@ const CardsLists = (props) => {
 export const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [booksList, setBooksList] = useState(null);
   const [viewOffset, setViewOffset] = useState(0);
   const [noContents, setNoContents] = useState(false);
   const [cookies, setCookies, removeCookie] = useCookies();
+  const {bookList, getBookList} = useGetBooks();
   const auth = useSelector((state) => state.auth.isSignIn);
   const handleLogOut = (e) => {
     removeCookie("token");
@@ -49,9 +48,8 @@ export const Main = () => {
   };
   useEffect(() => {
     if (auth) {
-      const res = GetBooks(cookies.token, viewOffset)
-      const bookList = res.data;
-      setBooksList(bookList);
+      getBookList(cookies.token, viewOffset);
+      if (bookList == null) return;
       if (bookList.length === 0) {
         setNoContents(true);
       } else {
@@ -91,7 +89,7 @@ export const Main = () => {
       </div>
     );
 
-  if (booksList == null)
+  if (bookList == null)
     return (
       <div>
         <h1>This is Main</h1>
@@ -110,7 +108,7 @@ export const Main = () => {
         <p className="now_card_view">
           {viewOffset}~{viewOffset + 10}を表示中
         </p>
-        <CardsLists cards={booksList} />
+        <CardsLists cards={bookList} />
       </div>
       <div className="paginator">
         {viewOffset / 10 <= 2 ? (
