@@ -1,11 +1,11 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { url } from "const";
-import "./Main.scss";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
-import { signOut } from "../authSlice";
 import { useNavigate } from "react-router-dom";
+import { GetUser, GetBooks } from "components/Api";
+import { signOut } from "../authSlice";
+import { url } from "const";
+import "./Main.scss";
 
 const CardsLists = (props) => {
   return (
@@ -49,53 +49,27 @@ export const Main = () => {
   };
   useEffect(() => {
     if (auth) {
-      axios
-        .get(`${url}/books`, {
-          params: {
-            offset: viewOffset,
-          },
-          headers: { Authorization: `Bearer ${cookies.token}` },
-        })
-        .then((res) => {
-          const list = res.data;
-          setBooksList(list);
-          if (list.length === 0) {
-            setNoContents(true);
-          } else {
-            setNoContents(false);
-          }
-          console.log("success to get book list");
-          console.log(list);
-        })
-        .catch((err) => {
-          console.log("fail to get book list");
-          console.log(err);
-        });
+      const res = GetBooks(cookies.token, viewOffset)
+      const bookList = res.data;
+      setBooksList(bookList);
+      if (bookList.length === 0) {
+        setNoContents(true);
+      } else {
+        setNoContents(false);
+      }
     } else {
       console.log("you can not get book list because you are not login.");
     }
   }, [viewOffset]);
   useEffect(() => {
     if (auth) {
-      axios({
-        method: "get",
-        url: "/users",
-        baseURL: `${url}`,
-        headers: { Authorization: `Bearer ${cookies.token}` },
-      })
-        .then((res) => {
-          console.log(`success to get users.`);
-          console.log(res);
-          setCookies("username", res.data.name);
-          return res.data;
-        })
-        .catch((err) => {
-          console.log(`fail to get users.`);
-          console.log(err);
-          return err;
-        });
+      console.log("hello auth");
+      const data = GetUser(auth, cookies.token);
+      console.log("main getUser");
+      console.log(data);
+      setCookies(data.name);
     } else {
-      console.log("you can not get user name because you are not login.");
+      console.log("you are not login.")
     }
   }, [auth]);
 
@@ -127,6 +101,7 @@ export const Main = () => {
   return (
     <div>
       <h1>This is Main</h1>
+      <button onClick={() => navigate("/profile")}>to profile</button>
       <button className="logout_button" onClick={(e) => handleLogOut(e)}>
         LogOut
       </button>

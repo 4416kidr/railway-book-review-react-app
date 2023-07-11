@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
-import { url } from "../const";
 import "./LogIn.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 import { signIn } from "../authSlice";
+import { LogInWithEmailPassword } from "components/Api";
 
 export const LogIn = () => {
   const navigate = useNavigate();
@@ -32,27 +31,17 @@ export const LogIn = () => {
     },
     onSubmit: (values) => {
       console.log(values);
-      const data = {
-        email: values.email,
-        password: values.password,
-      };
-      axios
-        .post(`${url}/signin`, data)
-        .then((res) => {
-          console.log(`success to SignIn`);
-          setToken(res.data.token);
-          setCookies("token", res.data.token);
-          dispatch(signIn());
-          console.log(res.data.token);
-          navigate("/main", {
-            token: res.data.token,
-          });
-        })
-        .catch((err) => {
-          console.log(`fail to SignIn.`);
-          console.log(err);
-          setSubmitResult("fail to SignIn");
-        });
+      const res = LogInWithEmailPassword(values.email, values.password);
+      if (res.status !== 200)
+      {
+        setSubmitResult("fail to SingIn");
+      } else {
+        const token = res.data.token;
+        setToken(token);
+        setCookies("token", token);
+        dispatch(signIn());
+        navigate("/main", {token: token});
+      }
     },
     validationSchema: schema,
   });
