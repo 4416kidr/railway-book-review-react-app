@@ -32,8 +32,8 @@ export const SignUp = () => {
     password: yup.string().required(),
     passwordConfirm: yup.string().required(),
   });
-  const UploadIcon = (token) => {
-    const res = UploadUserIcon(token, values.icon);
+  const UploadIcon = async (token) => {
+    const res = await UploadUserIcon(token, values.icon);
     if (res.status !== 200) {
       setSubmitResult("fail to Upload Icon");
     } else {
@@ -53,8 +53,8 @@ export const SignUp = () => {
         password: "",
         passwordConfirm: "",
       },
-      onSubmit: (values) => {
-        const res = SingUpWithNameEmailPassword(values.username, values.email, values.password)
+      onSubmit: async (values) => {
+        const res = await SingUpWithNameEmailPassword(values.username, values.email, values.password)
         if (res.status !== 200) {
           setSubmitResult("fail to SingUp");
         } else {

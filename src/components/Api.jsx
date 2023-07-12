@@ -31,10 +31,12 @@ export const LogInWithEmailPassword = (email, password) => {
     .then((res) => {
       console.log(`success to SignIn`);
       console.log(res);
+      return res
     })
     .catch((err) => {
       console.log(`fail to SignIn.`);
       console.log(err);
+      return err
     });
 }
 export const SingUpWithNameEmailPassword = (username, email, password) => {

@@ -29,9 +29,10 @@ export const LogIn = () => {
       email: "",
       password: "",
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
-      const res = LogInWithEmailPassword(values.email, values.password);
+      const res = await LogInWithEmailPassword(values.email, values.password);
+      console.log(res);
       if (res.status !== 200)
       {
         setSubmitResult("fail to SingIn");
