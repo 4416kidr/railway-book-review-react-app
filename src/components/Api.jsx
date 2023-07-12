@@ -98,3 +98,17 @@ export const useGetBooks = () => {
    );
   return {bookList, setBookList, getBookList}
 };
+
+export const RawGetBooks = (token, offset) => {
+  return axios({
+    method: "get",
+    url: "books",
+    baseURL: `${url}`,
+    headers: { Authorization: `Bearer ${token}` },
+    params: {
+      offset: offset,
+    }
+  }).then(res => {
+    return res;
+  });
+};

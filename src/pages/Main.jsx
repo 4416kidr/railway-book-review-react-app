@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetUser, GetBooks, useGetBooks } from "components/Api";
+import { GetUser, RawGetBooks, useGetBooks } from "components/Api";
 import { signOut } from "../authSlice";
+import ReactPaginate from "react-paginate";
 import "./Main.scss";
 
 const CardsLists = (props) => {
@@ -34,6 +35,9 @@ const CardsLists = (props) => {
 };
 
 export const Main = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [books, setBooks] = useState([]);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [viewOffset, setViewOffset] = useState(0);
@@ -41,6 +45,32 @@ export const Main = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
   const {bookList, getBookList} = useGetBooks();
   const auth = useSelector((state) => state.auth.isSignIn);
+  
+  const getPageCount = async () => {
+    let tempOffset = 0;
+    let booksData = [];
+    let books = [];
+    let isFirst = true
+  
+    while (books.length === 10 | isFirst) {
+      // console.log(`loop of ${loopCount}\noffset is ${tempOffset}`);
+      const res = await RawGetBooks(cookies.token, tempOffset);
+      books = res.data;
+      booksData.push(books)
+      if (books.length < 10) {
+        break;
+      }
+      tempOffset += 10;
+      if (isFirst) isFirst = false;
+    }
+    const flattened = Array.prototype.concat.apply([], booksData);
+    setBooks(flattened);
+    setIsLoaded(true);
+  };
+  useEffect(() => {
+    getPageCount();
+  }, []);
+
   const handleLogOut = (e) => {
     removeCookie("token");
     removeCookie("username");
@@ -71,6 +101,20 @@ export const Main = () => {
     }
   }, [auth]);
 
+  const getOldPageCount = () => {
+    let tempOffset = 0;
+    let tempLength = 10;
+    let tempPageList = [];
+    while (tempLength==10) {
+      const tempPromise = RawGetBooks(cookies.token, tempOffset);
+      tempPromise
+      .then((res) => {
+        tempPageList = [tempOffset, res.data?.length]
+      })
+
+    }
+  }
+
   const handleViewOffset = (diff) => {
     if (diff === 0) {
       setViewOffset(0);
@@ -89,6 +133,10 @@ export const Main = () => {
       </div>
     );
 
+  if (!isLoaded) {
+    return (<><h1>Now Loading... (!isLoaded)</h1></>)
+  }
+
   if (bookList == null)
     return (
       <div>
@@ -99,6 +147,7 @@ export const Main = () => {
   return (
     <div>
       <h1>This is Main</h1>
+      <p>page length: {books.length}</p>
       <button onClick={() => navigate("/profile")}>to profile</button>
       <button className="logout_button" onClick={(e) => handleLogOut(e)}>
         LogOut
@@ -110,6 +159,7 @@ export const Main = () => {
         </p>
         <CardsLists cards={bookList} />
       </div>
+      <ReactPaginate />
       <div className="paginator">
         {viewOffset / 10 <= 2 ? (
           <></>
