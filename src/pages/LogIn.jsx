@@ -7,6 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 import { signIn } from "../authSlice";
 import { LogInWithEmailPassword } from "components/Api";
+import { Header } from "components/Header";
+
+const LogInHeader = () => {
+  return (
+    <header><Header></Header></header>
+  )
+}
 
 export const LogIn = () => {
   const navigate = useNavigate();
@@ -63,6 +70,7 @@ export const LogIn = () => {
     }, 5000);
     return (
       <>
+        <LogInHeader></LogInHeader>
         <h1>This is Log In Page</h1>
         <p>You are already Log In</p>
         <p>
@@ -75,6 +83,7 @@ export const LogIn = () => {
 
   return (
     <>
+      <LogInHeader></LogInHeader>
       <h1>This is Log In Page</h1>
       <p className="please-login">{firstPhrase}</p>
       <button

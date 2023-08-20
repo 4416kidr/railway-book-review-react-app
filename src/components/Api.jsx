@@ -2,6 +2,32 @@ import axios from "axios";
 import { url } from "const";
 import { useState, useCallback } from "react";
 
+export const useGetUserName = () => {
+  console.log("useGetUser");
+  const [username, setUserName] = useState(null);
+  const getUserName = useCallback(
+    async (token) => {
+      console.log("getUser");
+      await axios({
+        method: "get",
+        url: "/users",
+        baseURL: `${url}`,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        console.log("success to get user name");
+        console.log(res);
+        setUserName(res.data.name)
+      })
+      .catch((err) => {
+        console.log("fail to get user name");
+        console.log(err);
+      });
+    }, []
+  );
+  return {username, setUserName, getUserName}
+};
+
 export const GetUser = async (token) => {
   try {
     console.log("--- this is GetUser ---");
