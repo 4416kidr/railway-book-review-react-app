@@ -5,7 +5,9 @@ import "./Home.scss";
 export const Home = () => {
   return (
     <>
-    <header><Header></Header></header>
+      <header>
+        <Header></Header>
+      </header>
       <h1>This is Home Page</h1>
       <div className="link-buttons">
         <Link to="/signup">SignUp</Link>

@@ -52,13 +52,13 @@ export const Main = () => {
     let tempOffset = 0;
     let booksData = [];
     let books = [];
-    let isFirst = true
-  
-    while (books.length === 10 | isFirst) {
+    let isFirst = true;
+
+    while ((books.length === 10) | isFirst) {
       // console.log(`loop of ${loopCount}\noffset is ${tempOffset}`);
       const res = await RawGetBooks(cookies.token, tempOffset);
       books = res.data;
-      booksData.push(books)
+      booksData.push(books);
       if (books.length < 10) {
         break;
       }
@@ -67,19 +67,19 @@ export const Main = () => {
     }
     const flattened = Array.prototype.concat.apply([], booksData);
     setBooks(flattened);
-    setPageBooks(flattened.slice(start, start+perPage));
+    setPageBooks(flattened.slice(start, start + perPage));
     setIsLoaded(true);
   };
   const handlePageChange = (data) => {
-    start = data['selected']*perPage;
-    setPageBooks(books.slice(start, start+perPage));
+    start = data["selected"] * perPage;
+    setPageBooks(books.slice(start, start + perPage));
     console.log(start);
-  }
+  };
   const handleLogOut = (e) => {
     removeCookie("token");
     removeCookie("username");
     dispatch(signOut());
-  }
+  };
   useEffect(() => {
     getPageCount();
   }, []);
@@ -90,12 +90,16 @@ export const Main = () => {
         <h1>You are not LogIn.</h1>
         <button onClick={() => navigate("/login")}>to LogIn</button>
       </div>
-    )
+    );
   }
   if (!isLoaded) {
-    return (<><h1>Now loading...</h1></>);
+    return (
+      <>
+        <h1>Now loading...</h1>
+      </>
+    );
   }
-  
+
   return (
     <>
       <header>
@@ -108,7 +112,7 @@ export const Main = () => {
       <button className="logout_button" onClick={(e) => handleLogOut(e)}>
         LogOut
       </button>
-      <CardsLists cards={pageBooks}/>
+      <CardsLists cards={pageBooks} />
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageChange}

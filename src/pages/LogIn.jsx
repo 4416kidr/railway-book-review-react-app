@@ -11,9 +11,11 @@ import { Header } from "components/Header";
 
 const LogInHeader = () => {
   return (
-    <header><Header></Header></header>
-  )
-}
+    <header>
+      <Header></Header>
+    </header>
+  );
+};
 
 export const LogIn = () => {
   const navigate = useNavigate();
@@ -40,8 +42,7 @@ export const LogIn = () => {
       console.log(values);
       const res = await LogInWithEmailPassword(values.email, values.password);
       console.log(res);
-      if (res.status !== 200)
-      {
+      if (res.status !== 200) {
         setSubmitResult("fail to SingIn");
       } else {
         const token = res.data.token;
@@ -51,7 +52,7 @@ export const LogIn = () => {
         console.log(userData);
         setCookies("username", userData.data.name);
         dispatch(signIn());
-        navigate("/main", {token: token});
+        navigate("/main", { token: token });
       }
     },
     validationSchema: schema,

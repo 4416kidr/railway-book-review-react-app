@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 import { signIn } from "authSlice.js";
 import "./SignUp.scss";
-import { SingUpWithNameEmailPassword, UploadUserIcon } from "components/Api.jsx";
+import {
+  SingUpWithNameEmailPassword,
+  UploadUserIcon,
+} from "components/Api.jsx";
 
 export const SignUp = () => {
   let navigate = useNavigate();
@@ -52,7 +55,11 @@ export const SignUp = () => {
         passwordConfirm: "",
       },
       onSubmit: async (values) => {
-        const res = await SingUpWithNameEmailPassword(values.username, values.email, values.password)
+        const res = await SingUpWithNameEmailPassword(
+          values.username,
+          values.email,
+          values.password
+        );
         if (res.status !== 200) {
           setSubmitResult("fail to SingUp");
         } else {
