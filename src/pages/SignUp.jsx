@@ -38,9 +38,7 @@ export const SignUp = () => {
       setSubmitResult("fail to Upload Icon");
     } else {
       setSubmitResult("success to Upload Icon");
-      setCookies("token", token);
-      dispatch(signIn());
-      navigate("/main");
+      return 200;
     }
   };
 
@@ -59,7 +57,13 @@ export const SignUp = () => {
           setSubmitResult("fail to SingUp");
         } else {
           setSubmitResult("success to SingUp");
-          UploadIcon(res.data.token);
+          const uploadStatus = UploadIcon(res.data.token);
+          if (uploadStatus === 200) {
+            setCookies("token", res.data.token);
+            setCookies("username", values.username);
+            dispatch(signIn());
+            navigate("/main");
+          }
         }
       },
       validationSchema: schema,

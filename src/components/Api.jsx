@@ -3,8 +3,8 @@ import { url } from "const";
 import { useState, useCallback } from "react";
 
 export const useGetUserName = () => {
-  console.log("useGetUser");
   const [username, setUserName] = useState(null);
+  const [iconUrl, setIconUrl] = useState(null);
   const getUserName = useCallback(
     async (token) => {
       console.log("getUser");
@@ -17,7 +17,8 @@ export const useGetUserName = () => {
       .then((res) => {
         console.log("success to get user name");
         console.log(res);
-        setUserName(res.data.name)
+        setUserName(res.data.name);
+        setIconUrl(res.data.iconUrl);
       })
       .catch((err) => {
         console.log("fail to get user name");
@@ -25,27 +26,27 @@ export const useGetUserName = () => {
       });
     }, []
   );
-  return {username, setUserName, getUserName}
+  return {username, iconUrl, setUserName, getUserName}
 };
 
 export const GetUser = async (token) => {
-  try {
-    console.log("--- this is GetUser ---");
-    console.log(token);
-    const res = await axios({
-      method: "get",
-      url: "/users",
-      baseURL: `${url}`,
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    console.log("success to get users.");
+  return axios({
+    method: "get",
+    url: "/users",
+    baseURL: `${url}`,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  .then((res) => {
+    console.log("success to get user");
     console.log(res);
-    return res.data;
-  } catch (err) {
-    console.log("fail to get users");
+    return res;
+  })
+  .catch((err) => {
+    console.log("fail to get user");
     console.log(err);
-  }
-};
+    return err;
+  });
+}
 
 export const LogInWithEmailPassword = (email, password) => {
   const data = {
@@ -140,3 +141,26 @@ export const RawGetBooks = (token, offset) => {
     return res;
   });
 };
+
+export const UpdateUser = async (token, name) => {
+  const data = {
+    name: name,
+  };
+  return await axios({
+    method: "put",
+    url: "/users",
+    baseURL: `${url}`,
+    headers: { Authorization: `Bearer ${token}` },
+    data: data,
+  })
+  .then((res) => {
+    console.log("success to Update.");
+    console.log(res);
+    return res;
+  })
+  .catch((err) => {
+    console.log("fail to Update.");
+    console.log(err);
+    return err;
+  });
+}

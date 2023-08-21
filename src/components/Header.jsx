@@ -10,14 +10,11 @@ export const Header = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth.isSignIn);
   const [cookies, setCookies, removeCookie] = useCookies();
-  const {username, getUserName} = useGetUserName();
   useEffect(() => {
+    console.log(cookies);
     if (auth) {
       if (cookies.token === null) {
         dispatch(signOut());
-      }
-      else {
-        getUserName(cookies.token);
       }
     } else {
       console.log("you are not login");
@@ -31,7 +28,7 @@ export const Header = () => {
         </Link>
       </h1>
       {auth ? (
-        <p className="login_status">Welcome {username}</p>
+        <p className="login_status">Welcome {cookies.username}</p>
       ) : (
         <Link to="/login" className="to_login_button">
           LogIn

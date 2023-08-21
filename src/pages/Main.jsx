@@ -7,6 +7,7 @@ import { signOut } from "../authSlice";
 import ReactPaginate from "react-paginate";
 import "./Main.scss";
 import { Header } from "components/Header";
+import { Link } from "react-router-dom";
 
 const CardsLists = (props) => {
   console.log("this is cards lists");
@@ -97,7 +98,10 @@ export const Main = () => {
   
   return (
     <>
-      <header><Header></Header></header>
+      <header>
+        <Header></Header>
+        <Link to="/profile">Profile</Link>
+      </header>
       <h1>This is Main Page</h1>
       <p>content length: {books.length}</p>
       <button onClick={() => navigate("/profile")}>to profile</button>

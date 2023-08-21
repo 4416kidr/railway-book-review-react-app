@@ -6,7 +6,7 @@ import "./LogIn.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 import { signIn } from "../authSlice";
-import { LogInWithEmailPassword } from "components/Api";
+import { LogInWithEmailPassword, GetUser } from "components/Api";
 import { Header } from "components/Header";
 
 const LogInHeader = () => {
@@ -47,6 +47,9 @@ export const LogIn = () => {
         const token = res.data.token;
         setToken(token);
         setCookies("token", token);
+        const userData = await GetUser(token);
+        console.log(userData);
+        setCookies("username", userData.data.name);
         dispatch(signIn());
         navigate("/main", {token: token});
       }
