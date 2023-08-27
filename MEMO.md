@@ -163,3 +163,121 @@
     - こちらを参考にリダイレクトまでの残り時間を表示するようにした
   - `navigate()`のような関数型の方が便利な場合もある
 - ユーザー作成とログイン成功時のリダイレクトはすでに Station4 で実装済み
+
+# Station7
+
+## 行ったこと
+
+- React-Paginate を導入した
+- 一覧画面のみに`/profile`へのリンクを表示させるために`Header.jsx`から`header`タグを取り出した
+- API を`Api.jsx`に切り出した
+
+## 内容
+
+- [React-Paginate の記述例（qiita.com）](https://qiita.com/togo_mentor/items/fe9f2c68ea824f5e5537)
+  - 各プロパティに対する日本語の説明がある
+- [React-Paginate のドキュメント（github.com）](https://github.com/AdeleD/react-paginate#readme)
+  - pageCount のみ必須で、その他のプロパティは必要に応じて記述する
+- [https://github.com/jsx-eslint/eslint-plugin-react/issues/3128](Configuration conflict)
+  - 一旦`yarn.lock`を削除してから`yarn install`して初期化したら治った
+    > ERROR in Plugin "react" was conflicted between "....\package.json » ./config/eslint.js » eslint-config-airbnb » C:\MyProject\node_modules\eslint-config-airbnb\rules\react-a11y.js" and "BaseConfig » C:\MyProject\node_modules\eslint-config-react-app\base.js".
+- [undefined 値の判定方法](http://blog.tojiru.net/article/205007468.html)
+  - `typeof a === "undefined"`が一般的らしい
+  - `a == null`や`a === void 0`という方法もある
+- [`<label htmlFor="">`](https://zenn.dev/kimura141899/articles/6e11e3a165460d)
+  - `htmlFor=""`で`input`の`id`を指定すると`label`をクリックすると、その`input`にフォーカスが移る
+
+## 学習用
+
+- [bulletproof-react というサンプルプロジェクトが勉強になるらしい](https://zenn.dev/manalink_dev/articles/bulletproof-react-is-best-architecture)
+  - [サンプルプロジェクト](https://github.com/alan2207/bulletproof-react)
+- [コンポーネントをカスタムフックで提供してみた](https://engineering.linecorp.com/ja/blog/line-securities-frontend-3)
+  - カスタムフックを使うまでの分離の過程を丁寧に説明しているサイト
+- 概要
+  ```
+  export const getPosts = async () => {
+    const result = await axios.get();
+    return result.data;
+  };
+  ```
+
+## API の切り出し
+
+- まだかなり曖昧なため、さらなる学習が必要
+- [カスタムフックの概要](https://qiita.com/cheez921/items/af5878b0c6db376dbaf0)
+  - 自分独自のフックを作成できる
+  - 描写とロジックの分離
+  - コピペをする必要がなくなる
+- [API を切り出す戦略](https://zenn.dev/sutamac/articles/27246dfe1b5a8e)
+
+  - 3 つの層
+  - Repository 層
+    - API-Client を用いて API 通信の処理を実装
+    ```
+    const getPost = async () => {
+      const response = await ApiClient.get();
+      return response.data;
+    }
+    ```
+  - Model: 受け取ったデータを整形する
+  - API-Client: axios を用いて API 通信の共通処理を実装
+
+    ```
+    export const ApiClient = axios.create({baseURL, headers});
+    // レスポンスのエラー判定処理
+    ApiClient.interceptors.response.use(
+      (res) => {
+        return res;
+      },
+      (err) => {
+        switch(err?.response?.status) {
+          case 401:
+            break;
+          default:
+            console.log();
+        }
+        const errorMessage = (err.response?.data?.message || "").split(",");
+        throw new Error(errorMessage);
+      }
+
+      //Token付与などのリクエスト処理の共通化
+      ApiClient.interceptors.request.use(async (request) => {
+        const accessToken = getAccessToken();
+        request.headers["access-token] = accessToken
+        return request;
+      })
+    )
+    ```
+
+- [カスタムフックの実例](https://zenn.dev/yuuuuta/articles/c1602dbf97c2ca)
+
+  - サイトより一部抜粋
+    - この場合`login.jsx`などで weatherData を加工して使いたいとなると、useState の問題で 2 回処理が必要となる
+    - したがって、データが必要ならば、上に示した「API を切り出す戦略」のサイトを参考にすると良いかもしれない
+
+  ```
+  export const useWeatherData = () => {
+    const apikey = process.env.REACT_APP_API_KEY;
+    const [weatherData, setWeatherData] = useState();
+
+    const getWeatherData = useCallback(
+      async () => {
+        await axios
+          .get()
+          .then((res) => {
+            setWeatherData(res.data);
+          })
+          .catch(err => console.log(err));
+      }, []
+    );
+    return {weatherData, setWeatherData, getWeatherData}
+  }
+  ```
+
+- [axios にも使われている Promise を理解する](https://tech-blog.rakus.co.jp/entry/20220929/axios)
+  - Promise は非同期処理の状態を監視するためのオブジェクト
+    - pending, resolve, reject の 3 状態が存在する
+    - Promise が resolve ならば`.then()`が実行され、reject ならば`.catch()`が実行される
+    - axios は以下の２点を自動で行ってくれる
+      - Promise のインスタンス化
+      - resolve, reject への状態遷移
