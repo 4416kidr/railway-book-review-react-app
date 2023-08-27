@@ -281,3 +281,6 @@
     - axios は以下の２点を自動で行ってくれる
       - Promise のインスタンス化
       - resolve, reject への状態遷移
+
+# Station 8
+- 8/28スタート
