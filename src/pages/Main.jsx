@@ -79,6 +79,7 @@ export const Main = () => {
     removeCookie("token");
     removeCookie("username");
     dispatch(signOut());
+    navigate("/login");
   };
   useEffect(() => {
     getPageCount();
@@ -105,13 +106,13 @@ export const Main = () => {
       <header>
         <Header></Header>
         <Link to="/profile">Profile</Link>
+        <button className="logout_button" onClick={(e) => handleLogOut(e)}>
+          LogOut
+        </button>
+        <button onClick={() => navigate("/profile")}>to profile</button>
       </header>
       <h1>This is Main Page</h1>
       <p>content length: {books.length}</p>
-      <button onClick={() => navigate("/profile")}>to profile</button>
-      <button className="logout_button" onClick={(e) => handleLogOut(e)}>
-        LogOut
-      </button>
       <CardsLists cards={pageBooks} />
       <ReactPaginate
         nextLabel="next >"
